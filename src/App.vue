@@ -86,17 +86,6 @@
       </Auth>
       <!-- ================= 组件方式 ================= -->
     </div>
-    <h2>指令方式</h2>
-    <div class="button-group">
-      <!-- ================= 指令方式 ================= -->
-      <button v-auth="['submitOrApprove', authList]">
-        {{ form.flowStatus ? '审批' : '提交' }}
-      </button>
-      <button v-auth="['save', authList]">保存草稿</button>
-      <button v-auth="['abort', authList]">终止</button>
-      <button v-auth="['delete', authList]">删除</button>
-      <!-- ================= 指令方式 ================= -->
-    </div>
     <h2>指令方式 PLUS - 约定法（约定按钮内的文本不会发生变更）</h2>
     <div class="button-group">
       <!-- ================= 指令方式 PLUS ================= -->
@@ -104,7 +93,6 @@
         {{ form.flowStatus ? '审批' : '提交' }}
       </button>
       <button v-authPlus="authParams">保存草稿</button>
-      <button>保存草稿</button>
       <button v-authPlus="authParams">终止</button>
       <button v-authPlus="authParams">删除</button>
       <!-- ================= 指令方式 PLUS ================= -->
