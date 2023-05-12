@@ -20,6 +20,5 @@ export function getAuthList(authInfo = {}) {
   id && isCreator && ![0, 2, 4].includes(flowStatus) && authList.push('abort')
   // 「删除」按钮权限
   id && isCreator && [0, 4].includes(flowStatus) && authList.push('delete')
-
   return authList
 }

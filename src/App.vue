@@ -29,7 +29,7 @@
         <select id="to-do" v-model="form.todoMessageList">
           <option
             v-for="item in enums.todoMessageListTypes"
-            :key="item.value"
+            :key="JSON.stringify(item.value)"
             :value="item.value"
           >
             {{ item.label }}
@@ -45,7 +45,7 @@
       </li>
       <li>
         登录用户进入详情时，有详情 id，流程状态为草稿，创建者 id 与登录用户 id
-        相同，待办一定无数据，可以操作「提交」「保存草稿」「删除」按钮；
+        一定相同，待办一定无数据，可以操作「提交」「保存草稿」「删除」按钮；
       </li>
       <li>
         登录用户进入详情时，有详情 id，流程状态为审核中，创建者 id 与登录用户 id
@@ -65,7 +65,7 @@
       </li>
       <li>
         登录用户进入详情时，有详情 id，流程状态为已终止，创建者 id 与登录用户 id
-        相同，待办一定无数据，可以操作「终止」按钮；
+        相同，待办一定无数据，可以操作「删除」按钮；
       </li>
       <li>
         登录用户进入详情时，有详情 id，流程状态为已终止，创建者 id 与登录用户 id
@@ -100,12 +100,13 @@
     <h2>指令方式 PLUS - 约定法（约定按钮内的文本不会发生变更）</h2>
     <div class="button-group">
       <!-- ================= 指令方式 PLUS ================= -->
-      <button v-authPlus="authList">
+      <button v-authPlus="authParams">
         {{ form.flowStatus ? '审批' : '提交' }}
       </button>
-      <button v-authPlus="authList">保存草稿</button>
-      <button v-authPlus="authList">终止</button>
-      <button v-authPlus="authList">删除</button>
+      <button v-authPlus="authParams">保存草稿</button>
+      <button>保存草稿</button>
+      <button v-authPlus="authParams">终止</button>
+      <button v-authPlus="authParams">删除</button>
       <!-- ================= 指令方式 PLUS ================= -->
     </div>
   </div>
@@ -132,13 +133,25 @@ export default {
   computed: {
     // 权限列表
     authList() {
-      const todoMessageList = this.form.todoMessageList ? [{}] : []
       return this.$getAuthList({
         id: this.form.id,
         flowStatus: this.form.flowStatus,
         creatorId: this.form.creatorId,
-        todoMessageList: todoMessageList
+        todoMessageList: this.form.todoMessageList
       })
+    },
+    // 按钮权限判定所需参数
+    authParams() {
+      return {
+        // 详情 id
+        id: this.form.id,
+        // 流程状态
+        flowStatus: this.form.flowStatus,
+        // 创建者 id
+        creatorId: this.form.creatorId,
+        // 待办信息列表
+        todoMessageList: this.form.todoMessageList
+      }
     }
   }
 }

@@ -8,8 +8,8 @@ export const flowStatusTypes = [
   { label: '待发布', value: 9 }
 ]
 
-// 待办数据长度类型
+// 待办数据类型
 export const todoMessageListTypes = [
-  { label: '无数据', value: 0 },
-  { label: '有数据', value: 1 }
+  { label: '无数据', value: [] },
+  { label: '有数据', value: [{}] }
 ]
