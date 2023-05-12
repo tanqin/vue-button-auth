@@ -1,24 +1,27 @@
 # vue-button-auth
 
-## Project setup
-```
-yarn install
+前端按钮权限校验设计
+
+## 安装依赖
+
+```shell
+yarn
 ```
 
-### Compiles and hot-reloads for development
-```
-yarn serve
+### 运行
+
+```shell
+yarn dev
 ```
 
-### Compiles and minifies for production
-```
+### 打包
+
+```shell
 yarn build
 ```
 
-### Lints and fixes files
-```
+### 格式修复
+
+```shell
 yarn lint
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
