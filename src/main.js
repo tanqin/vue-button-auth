@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import App from './App.vue'
 import Auth from './components/Auth.vue'
-import authPlus from './directives/authPlus'
+import auth from './directives/auth'
 import { getAuthList } from '@/utils/index'
 
 Vue.component('Auth', Auth)
 
-Vue.use(authPlus)
+Vue.use(auth)
 
 Vue.prototype.$getAuthList = getAuthList
 

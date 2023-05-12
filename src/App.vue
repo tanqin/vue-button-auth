@@ -49,7 +49,11 @@
       </li>
       <li>
         登录用户进入详情时，有详情 id，流程状态为审核中，创建者 id 与登录用户 id
-        相同，待办无数据，可以操作「终止」按钮；
+        相同，待办无数据，可以操作「审批」「终止」按钮；
+      </li>
+      <li>
+        登录用户进入详情时，有详情 id，流程状态为审核中，创建者 id 与登录用户 id
+        相同，待办有数据，可以操作「终止」按钮；
       </li>
       <li>
         登录用户进入详情时，有详情 id，流程状态为审核中，创建者 id 与登录用户 id
@@ -86,16 +90,56 @@
       </Auth>
       <!-- ================= 组件方式 ================= -->
     </div>
-    <h2>指令方式 PLUS - 约定法（约定按钮内的文本不会发生变更）</h2>
+    <h2>指令方式 - 约定法（约定按钮内的文本不会发生变更）</h2>
     <div class="button-group">
-      <!-- ================= 指令方式 PLUS ================= -->
-      <button v-authPlus="authParams">
+      <!-- ================= 指令方式 ================= -->
+      <button v-auth="authParams">
         {{ form.flowStatus ? '审批' : '提交' }}
       </button>
-      <button v-authPlus="authParams">保存草稿</button>
-      <button v-authPlus="authParams">终止</button>
-      <button v-authPlus="authParams">删除</button>
-      <!-- ================= 指令方式 PLUS ================= -->
+      <button v-auth="authParams">保存草稿</button>
+      <button v-auth="authParams">终止</button>
+      <button v-auth="authParams">删除</button>
+      <!-- <button
+        v-auth="{
+          id: form.id,
+          flowStatus: form.flowStatus,
+          creatorId: form.creatorId,
+          todoMessageList: form.todoMessageList
+        }"
+      >
+        {{ form.flowStatus ? '审批' : '提交' }}
+      </button>
+      <button
+        v-auth="{
+          id: form.id,
+          flowStatus: form.flowStatus,
+          creatorId: form.creatorId,
+          todoMessageList: form.todoMessageList
+        }"
+      >
+        保存草稿
+      </button>
+      <button
+        v-auth="{
+          id: form.id,
+          flowStatus: form.flowStatus,
+          creatorId: form.creatorId,
+          todoMessageList: form.todoMessageList
+        }"
+      >
+        终止
+      </button>
+      <button
+        v-auth="{
+          id: form.id,
+          flowStatus: form.flowStatus,
+          creatorId: form.creatorId,
+          todoMessageList: form.todoMessageList
+        }"
+      >
+        删除
+      </button> -->
+      <!-- ================= 指令方式 ================= -->
     </div>
   </div>
 </template>

@@ -65,11 +65,11 @@ function authVerify(el, binding) {
 
 /**
  * 按钮权限指令，用于判定按钮是否可见
- * 注：当 v-authPlus 指令不传值时，作用相当于 hidden 属性
+ * 注：当 v-auth 指令不传值时，作用相当于 hidden 属性
  * @param {*} Vue
  */
 export default function install(Vue) {
-  Vue.directive('authPlus', {
+  Vue.directive('auth', {
     // 被绑定元素插入父节点时调用
     inserted(el, binding) {
       authVerify(el, binding)
