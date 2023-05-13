@@ -1,3 +1,24 @@
+/**
+ * 按钮权限指令，用于判定按钮是否可见
+ * 注：当 v-auth 指令不传值时，作用相当于 hidden 属性
+ * @param {*} Vue
+ */
+export default function install(Vue) {
+  Vue.directive('auth', {
+    // 被绑定元素插入父节点时调用
+    inserted(el, binding) {
+      authVerify(el, binding)
+    },
+    // 所在组件的 vNode 更新时调用
+    update(el, binding) {
+      // 指令传入的新、旧值不一致时进行权限校验，以提升性能
+      if (JSON.stringify(binding.value) !== JSON.stringify(binding.oldValue)) {
+        authVerify(el, binding)
+      }
+    }
+  })
+}
+
 // 按钮类型
 const buttonTypes = [
   {
@@ -24,11 +45,11 @@ const buttonTypes = [
 
 /**
  * 获取权限列表
- * @param {object | undefined} authInfo 包含参数 { id, flowStatus, creatorId, todoMessageList } 分别表示 { 详情 id, 流程状态, 创建者 id, 待办信息列表 }。
+ * @param {object | undefined} authParams 包含参数 { id, flowStatus, creatorId, todoMessageList } 分别表示 { 详情 id, 流程状态, 创建者 id, 待办信息列表 }。
  * @returns 权限列表 eg: ['submitOrApprove', 'save', 'abort', 'delete']
  */
-export function getAuthList(authInfo = {}) {
-  let { creatorId, flowStatus, todoMessageList, id } = authInfo
+function getAuthList(authParams = {}) {
+  let { creatorId, flowStatus, todoMessageList, id } = authParams
   const authList = []
   // 当前登录用户 id，实际项目应该从 Vuex 中获取
   const userId = '10086'
@@ -40,8 +61,7 @@ export function getAuthList(authInfo = {}) {
   const todoMessageListLength = todoMessageList?.length
 
   // 「提交」「审批」按钮权限
-  ;(todoMessageListLength || flowStatus === 0) &&
-    authList.push('submitOrApprove')
+  ;(todoMessageListLength || flowStatus === 0) && authList.push('submitOrApprove')
   // 「保存草稿」按钮权限
   isCreator && flowStatus === 0 && authList.push('save')
   // 「终止审批」按钮权限
@@ -61,25 +81,4 @@ function authVerify(el, binding) {
   const authType = buttonTypes.find((item) => item.label === elText)?.value
   const authIndex = authList.findIndex((authItem) => authItem === authType)
   el.style.display = authIndex === -1 ? 'none' : ''
-}
-
-/**
- * 按钮权限指令，用于判定按钮是否可见
- * 注：当 v-auth 指令不传值时，作用相当于 hidden 属性
- * @param {*} Vue
- */
-export default function install(Vue) {
-  Vue.directive('auth', {
-    // 被绑定元素插入父节点时调用
-    inserted(el, binding) {
-      authVerify(el, binding)
-    },
-    // 所在组件的 vNode 更新时调用
-    update(el, binding) {
-      // 指令传入的新、旧值不一致时进行权限校验，以提升性能
-      if (JSON.stringify(binding.value) !== JSON.stringify(binding.oldValue)) {
-        authVerify(el, binding)
-      }
-    }
-  })
 }

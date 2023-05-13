@@ -11,11 +11,7 @@
       <label for="flow-status">
         流程状态：
         <select id="flow-status" v-model="form.flowStatus">
-          <option
-            v-for="item in enums.flowStatusTypes"
-            :key="item.value"
-            :value="item.value"
-          >
+          <option v-for="item in enums.flowStatusTypes" :key="item.value" :value="item.value">
             {{ item.label }}
           </option>
         </select>
@@ -27,11 +23,7 @@
       <label for="to-do">
         当前用户是否有待办数据：
         <select id="to-do" v-model="form.todoMessageList">
-          <option
-            v-for="item in enums.todoMessageListTypes"
-            :key="JSON.stringify(item.value)"
-            :value="item.value"
-          >
+          <option v-for="item in enums.todoMessageListTypes" :key="JSON.stringify(item.value)" :value="item.value">
             {{ item.label }}
           </option>
         </select>
@@ -39,107 +31,37 @@
     </form>
     <i>所有可能出现的情况（尚未考虑已结束、待发布状态）：</i>
     <ol>
-      <li>
-        登录用户新建时，没有详情 id，流程状态一定为空，创建者 id
-        一定为空，待办一定无数据，此时说明登录用户就是创建者，可以操作「提交」「保存草稿」按钮；
-      </li>
-      <li>
-        登录用户进入详情时，有详情 id，流程状态为草稿，创建者 id 与登录用户 id
-        一定相同，待办一定无数据，可以操作「提交」「保存草稿」「删除」按钮；
-      </li>
-      <li>
-        登录用户进入详情时，有详情 id，流程状态为审核中，创建者 id 与登录用户 id
-        相同，待办无数据，可以操作「审批」「终止」按钮；
-      </li>
-      <li>
-        登录用户进入详情时，有详情 id，流程状态为审核中，创建者 id 与登录用户 id
-        相同，待办有数据，可以操作「终止」按钮；
-      </li>
-      <li>
-        登录用户进入详情时，有详情 id，流程状态为审核中，创建者 id 与登录用户 id
-        不同，待办无数据，没有可以操作的按钮；
-      </li>
-      <li>
-        登录用户进入详情时，有详情 id，流程状态为审核中，创建者 id 与登录用户 id
-        不同，待办有数据，可以操作「审批」的按钮；
-      </li>
-      <li>
-        登录用户进入详情时，有详情 id，流程状态为已完成，创建者 id 与登录用户 id
-        不管是否相同，待办一定无数据，没有可以操作的按钮；
-      </li>
-      <li>
-        登录用户进入详情时，有详情 id，流程状态为已终止，创建者 id 与登录用户 id
-        相同，待办一定无数据，可以操作「删除」按钮；
-      </li>
-      <li>
-        登录用户进入详情时，有详情 id，流程状态为已终止，创建者 id 与登录用户 id
-        不同，待办一定无数据，没有可以操作的按钮；
-      </li>
+      <li>登录用户新建时，没有详情 id，流程状态一定为空，创建者 id 一定为空，待办一定无数据，此时说明登录用户就是创建者，可以操作「提交」「保存草稿」按钮；</li>
+      <li>登录用户进入详情时，有详情 id，流程状态为草稿，创建者 id 与登录用户 id 一定相同，待办一定无数据，可以操作「提交」「保存草稿」「删除」按钮；</li>
+      <li>登录用户进入详情时，有详情 id，流程状态为审核中，创建者 id 与登录用户 id 相同，待办无数据，可以操作「审批」「终止」按钮；</li>
+      <li>登录用户进入详情时，有详情 id，流程状态为审核中，创建者 id 与登录用户 id 相同，待办有数据，可以操作「终止」按钮；</li>
+      <li>登录用户进入详情时，有详情 id，流程状态为审核中，创建者 id 与登录用户 id 不同，待办无数据，没有可以操作的按钮；</li>
+      <li>登录用户进入详情时，有详情 id，流程状态为审核中，创建者 id 与登录用户 id 不同，待办有数据，可以操作「审批」的按钮；</li>
+      <li>登录用户进入详情时，有详情 id，流程状态为已完成，创建者 id 与登录用户 id 不管是否相同，待办一定无数据，没有可以操作的按钮；</li>
+      <li>登录用户进入详情时，有详情 id，流程状态为已终止，创建者 id 与登录用户 id 相同，待办一定无数据，可以操作「删除」按钮；</li>
+      <li>登录用户进入详情时，有详情 id，流程状态为已终止，创建者 id 与登录用户 id 不同，待办一定无数据，没有可以操作的按钮；</li>
     </ol>
     <hr />
-    <h2>组件方式</h2>
-    <div class="button-group">
-      <!-- ================= 组件方式 ================= -->
-      <Auth :authList="authList">
-        <button authType="submitOrApprove">
-          {{ form.flowStatus ? '审批' : '提交' }}
-        </button>
-        <button authType="save">保存草稿</button>
-        <button authType="abort">终止</button>
-        <button authType="delete">删除</button>
+    <div class="container">
+      <h2>组件方式</h2>
+      <Auth :authParams="authParams">
+        <button>{{ form.flowStatus ? '审批' : '提交' }}</button>
+        <button>保存草稿</button>
+        <button>终止</button>
+        <button>删除</button>
       </Auth>
-      <!-- ================= 组件方式 ================= -->
     </div>
-    <h2>指令方式 - 约定法（约定按钮内的文本不会发生变更）</h2>
-    <div class="button-group">
-      <!-- ================= 指令方式 ================= -->
-      <button v-auth="authParams">
-        {{ form.flowStatus ? '审批' : '提交' }}
-      </button>
+    <div class="container">
+      <h2>指令方式</h2>
+      <button v-auth="authParams">{{ form.flowStatus ? '审批' : '提交' }}</button>
       <button v-auth="authParams">保存草稿</button>
       <button v-auth="authParams">终止</button>
       <button v-auth="authParams">删除</button>
-      <!-- <button
-        v-auth="{
-          id: form.id,
-          flowStatus: form.flowStatus,
-          creatorId: form.creatorId,
-          todoMessageList: form.todoMessageList
-        }"
-      >
-        {{ form.flowStatus ? '审批' : '提交' }}
-      </button>
-      <button
-        v-auth="{
-          id: form.id,
-          flowStatus: form.flowStatus,
-          creatorId: form.creatorId,
-          todoMessageList: form.todoMessageList
-        }"
-      >
-        保存草稿
-      </button>
-      <button
-        v-auth="{
-          id: form.id,
-          flowStatus: form.flowStatus,
-          creatorId: form.creatorId,
-          todoMessageList: form.todoMessageList
-        }"
-      >
-        终止
-      </button>
-      <button
-        v-auth="{
-          id: form.id,
-          flowStatus: form.flowStatus,
-          creatorId: form.creatorId,
-          todoMessageList: form.todoMessageList
-        }"
-      >
-        删除
-      </button> -->
-      <!-- ================= 指令方式 ================= -->
+      <!-- 也可以直接将按钮权限判定所需参数直接绑定到指令上，但是由于这么些太长，还是统一抽离比较好 -->
+      <!-- <button v-auth="{ id: form.id, flowStatus: form.flowStatus, creatorId: form.creatorId, todoMessageList: form.todoMessageList }">{{ form.flowStatus ? '审批' : '提交' }}</button>
+      <button v-auth="{ id: form.id, flowStatus: form.flowStatus, creatorId: form.creatorId, todoMessageList: form.todoMessageList }">保存草稿</button>
+      <button v-auth="{ id: form.id, flowStatus: form.flowStatus, creatorId: form.creatorId, todoMessageList: form.todoMessageList }">终止</button>
+      <button v-auth="{ id: form.id, flowStatus: form.flowStatus, creatorId: form.creatorId, todoMessageList: form.todoMessageList }">删除</button> -->
     </div>
   </div>
 </template>
@@ -163,15 +85,6 @@ export default {
     }
   },
   computed: {
-    // 权限列表
-    authList() {
-      return this.$getAuthList({
-        id: this.form.id,
-        flowStatus: this.form.flowStatus,
-        creatorId: this.form.creatorId,
-        todoMessageList: this.form.todoMessageList
-      })
-    },
     // 按钮权限判定所需参数
     authParams() {
       return {
@@ -190,8 +103,8 @@ export default {
 </script>
 
 <style>
-.button-group {
-  height: 30px;
+.container {
+  height: 80px;
 }
 button {
   margin-right: 10px;
