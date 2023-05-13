@@ -19,6 +19,18 @@ export default function install(Vue) {
   })
 }
 
+// 权限校验
+function authVerify(el, binding) {
+  let authList = []
+  if (binding.value) {
+    authList = getAuthList(binding.value)
+  }
+  const elText = el.innerText.trim()
+  const authType = buttonTypes.find((item) => item.label === elText)?.value
+  const authIndex = authList.findIndex((authItem) => authItem === authType)
+  el.style.display = authIndex === -1 ? 'none' : ''
+}
+
 // 按钮类型
 const buttonTypes = [
   {
@@ -69,16 +81,4 @@ function getAuthList(authParams = {}) {
   // 「删除」按钮权限
   id && isCreator && [0, 4].includes(flowStatus) && authList.push('delete')
   return authList
-}
-
-// 权限校验
-function authVerify(el, binding) {
-  let authList = []
-  if (binding.value) {
-    authList = getAuthList(binding.value)
-  }
-  const elText = el.innerText.trim()
-  const authType = buttonTypes.find((item) => item.label === elText)?.value
-  const authIndex = authList.findIndex((authItem) => authItem === authType)
-  el.style.display = authIndex === -1 ? 'none' : ''
 }
