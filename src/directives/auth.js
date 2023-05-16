@@ -1,12 +1,12 @@
 /**
  * 按钮权限指令，用于判定按钮是否可见
- * 注：当 v-auth 指令不传值时，作用相当于 hidden 属性
+ * 注：当 v-hasAuth 指令不传值时，作用相当于 hidden 属性
  * @param {*} Vue
  */
 export default function install(Vue) {
-  Vue.directive('auth', {
-    // 被绑定元素插入父节点时调用
-    inserted(el, binding) {
+  Vue.directive('hasAuth', {
+    // 指令第一次绑定到元素时调用
+    bind(el, binding) {
       authVerify(el, binding)
     },
     // 所在组件的 vNode 更新时调用
@@ -46,7 +46,7 @@ const buttonTypes = [
     value: 'save'
   },
   {
-    label: '终止',
+    label: '终止审批',
     value: 'abort'
   },
   {

@@ -18,7 +18,7 @@ const buttonTypes = [
     value: 'save'
   },
   {
-    label: '终止',
+    label: '终止审批',
     value: 'abort'
   },
   {

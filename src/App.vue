@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <h1>前端按钮权限控制设计</h1>
-    <b>说明：按钮种类包括「审批」「提交」「保存草稿」「终止」「删除」</b>
+    <b>说明：按钮种类包括「审批」「提交」「保存草稿」「终止审批」「删除」</b>
     <p>假设当前登录用户 id：10086</p>
     <form action="">
       <label for="flow-status">
@@ -33,8 +33,8 @@
     <ol>
       <li>登录用户新建时，没有详情 id，流程状态一定为空，创建者 id 一定为空，待办一定无数据，此时说明登录用户就是创建者，可以操作「提交」「保存草稿」按钮；</li>
       <li>登录用户进入详情时，有详情 id，流程状态为草稿，创建者 id 与登录用户 id 一定相同，待办一定无数据，可以操作「提交」「保存草稿」「删除」按钮；</li>
-      <li>登录用户进入详情时，有详情 id，流程状态为审核中，创建者 id 与登录用户 id 相同，待办无数据，可以操作「审批」「终止」按钮；</li>
-      <li>登录用户进入详情时，有详情 id，流程状态为审核中，创建者 id 与登录用户 id 相同，待办有数据，可以操作「终止」按钮；</li>
+      <li>登录用户进入详情时，有详情 id，流程状态为审核中，创建者 id 与登录用户 id 相同，待办无数据，可以操作「审批」「终止审批」按钮；</li>
+      <li>登录用户进入详情时，有详情 id，流程状态为审核中，创建者 id 与登录用户 id 相同，待办有数据，可以操作「终止审批」按钮；</li>
       <li>登录用户进入详情时，有详情 id，流程状态为审核中，创建者 id 与登录用户 id 不同，待办无数据，没有可以操作的按钮；</li>
       <li>登录用户进入详情时，有详情 id，流程状态为审核中，创建者 id 与登录用户 id 不同，待办有数据，可以操作「审批」的按钮；</li>
       <li>登录用户进入详情时，有详情 id，流程状态为已完成，创建者 id 与登录用户 id 不管是否相同，待办一定无数据，没有可以操作的按钮；</li>
@@ -47,21 +47,16 @@
       <Auth :authParams="authParams">
         <button>{{ form.flowStatus ? '审批' : '提交' }}</button>
         <button>保存草稿</button>
-        <button>终止</button>
+        <button>终止审批</button>
         <button>删除</button>
       </Auth>
     </div>
     <div class="container">
       <h2>指令方式</h2>
-      <button v-auth="authParams">{{ form.flowStatus ? '审批' : '提交' }}</button>
-      <button v-auth="authParams">保存草稿</button>
-      <button v-auth="authParams">终止</button>
-      <button v-auth="authParams">删除</button>
-      <!-- 也可以直接将按钮权限判定所需参数直接绑定到指令上，但是由于这么些太长，还是统一抽离比较好 -->
-      <!-- <button v-auth="{ id: form.id, flowStatus: form.flowStatus, creatorId: form.creatorId, todoMessageList: form.todoMessageList }">{{ form.flowStatus ? '审批' : '提交' }}</button>
-      <button v-auth="{ id: form.id, flowStatus: form.flowStatus, creatorId: form.creatorId, todoMessageList: form.todoMessageList }">保存草稿</button>
-      <button v-auth="{ id: form.id, flowStatus: form.flowStatus, creatorId: form.creatorId, todoMessageList: form.todoMessageList }">终止</button>
-      <button v-auth="{ id: form.id, flowStatus: form.flowStatus, creatorId: form.creatorId, todoMessageList: form.todoMessageList }">删除</button> -->
+      <button v-hasAuth="authParams">{{ form.flowStatus ? '审批' : '提交' }}</button>
+      <button v-hasAuth="authParams">保存草稿</button>
+      <button v-hasAuth="authParams">终止审批</button>
+      <button v-hasAuth="authParams">删除</button>
     </div>
   </div>
 </template>
@@ -85,7 +80,7 @@ export default {
     }
   },
   computed: {
-    // 按钮权限判定所需参数
+    // v-hasAuth 进行按钮权限判定所需参数
     authParams() {
       return {
         // 详情 id
